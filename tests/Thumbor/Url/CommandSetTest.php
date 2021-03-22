@@ -2,7 +2,7 @@
 
 namespace Thumbor\Url;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 
 class CommandSetTest extends TestCase
 {
@@ -103,6 +103,19 @@ class CommandSetTest extends TestCase
         $commandSet->addFilter('bla', 'quux', 42);
         $this->assertEquals(
             array('filters:foo():bar(baz):bla(quux,42)'),
+            $commandSet->toArray()
+        );
+    }
+
+    public function testAddFilterNotGrouped()
+    {
+        $commandSet = new CommandSet();
+        $commandSet->addFilter('foo');
+        $commandSet->addFilter('bar', 'baz');
+        $commandSet->addFilter('bla', 'quux', 42);
+        $commandSet->isGroupFilter(false);
+        $this->assertEquals(
+            array('filters:foo()', 'filters:bar(baz)', 'filters:bla(quux,42)'),
             $commandSet->toArray()
         );
     }
