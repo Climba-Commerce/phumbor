@@ -33,6 +33,7 @@ use Thumbor\Url;
  * @method Builder valign($valign)
  * @method Builder smartCrop($smartCrop)
  * @method Builder addFilter($filter, $args, $_ = null)
+ * @method Builder isGroupFilter(bool $groupFilters)
  * @method Builder metadataOnly($metadataOnly)
  */
 class Builder

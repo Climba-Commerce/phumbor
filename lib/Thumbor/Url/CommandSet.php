@@ -15,6 +15,7 @@ class CommandSet
     private $valign;
     private $smartCrop = false;
     private $filters = array();
+    private $groupFilters = true;
     private $metadataOnly = false;
 
     /**
@@ -112,6 +113,14 @@ class CommandSet
     }
 
     /**
+     * @param bool $groupFilters
+     */
+    public function isGroupFilter(bool $groupFilters)
+    {
+        $this->groupFilters = $groupFilters;
+    }
+
+    /**
      * Specify that JSON metadata should be returned instead of the thumbnailed
      * image.
      * @param bool $metadataOnly
@@ -147,8 +156,17 @@ class CommandSet
         }
 
         if (count($this->filters)) {
-            $filters = 'filters:' . implode(':', $this->filters);
-            $commands []= $filters;
+
+            $filterParam = 'filters:';
+
+            if ($this->groupFilters) {
+                $filters = $filterParam . implode(':', $this->filters);
+                $commands []= $filters;
+            } else {
+                foreach ($this->filters as $filter) {
+                    $commands []= $filterParam . $filter;
+                }
+            }
         }
 
         return $commands;
